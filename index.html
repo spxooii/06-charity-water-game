@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WellPlayed Prototype</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- START SCREEN -->
+  <div id="start-screen" class="active">
+    <h1>💧 WellPlayed</h1>
+    <p class="tagline">Merge your way to clean water for all</p>
+    <button id="start-btn">Start Game</button>
+    <button id="how-to-play-btn">How to Play</button>
+    <p class="note">
+      Inspired by charity: water’s mission to bring clean water to everyone.
+    </p>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="game-screen">
+    <div id="hud">
+      <div id="score">Score: 0</div>
+      <div id="impact">People Served: 0</div>
+      <div id="highest-tile">Highest Container: Cup</div>
+      <div id="timer-bar">
+        <div id="timer-fill"></div>
+      </div>
+    </div>
+
+    <div id="game">
+      <!-- 16 empty grid cells -->
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+    </div>
+
+    <div id="fact-box">
+      💡 Fact: Did you know? 1 in 10 people live without access to clean water.
+    </div>
+  </div>
+
+  <!-- END SCREEN -->
+  <div id="end-screen">
+    <h2>Game Over!</h2>
+    <p id="final-score">Final Score: 0</p>
+    <p id="final-impact">People Served: 0</p>
+    <p id="highest-tile">Highest Container: Cup</p>
+    <p class="reminder">💧 Remember: Every drop counts.</p>
+    <button id="play-again">Play Again</button>
+    <button id="learn-more">Learn More</button>
+  </div>
+
+  <!-- HOW TO PLAY MODAL -->
+  <div id="how-to-play" class="modal">
+    <div class="modal-content">
+      <span id="close-modal">&times;</span>
+      <h2>How to Play</h2>
+      <ul>
+        <li>Use arrow keys (desktop) or swipe (mobile) to move water containers.</li>
+        <li>Merge two containers of the same type to create a bigger one.</li>
+        <li>Each merge increases your score and impact (people served).</li>
+        <li>Try to reach the largest container: Pipeline!</li>
+        <li>Watch the timer — the game ends when time runs out.</li>
+      </ul>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

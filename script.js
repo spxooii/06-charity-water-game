@@ -20,10 +20,25 @@ const closeModal = document.getElementById('close-modal');
 const size = 4;
 let board = [];
 let score = 0;
+
 let timer = 60;
 let timerInterval = null;
-let shownContainers = []; // array instead of Set
-const tileOrder = ["Cup","Bottle","Bucket","JerryCan","Well","Pump","Pipeline"];
+
+const difficulty = {
+  easy: { seconds: 90, label: "Easy" },
+  normal: { seconds: 60, label: "Normal" },
+  hard: { seconds: 40, label: "Hard" }
+};
+
+// Current mode + timer state
+let currentDifficulty = "normal";
+let maxTime = difficulty[currentDifficulty].seconds; // for % bar
+let timeLeft = maxTime;
+
+let shownContainers = [];
+
+const tileOrder = ["Cup", "Bottle", "Bucket", "JerryCan", "Well", "Pump", "Pipeline"];
+let highestContainer = "Cup";
 
 // Container-aligned facts
 const containerFacts = {
@@ -52,13 +67,13 @@ playAgainBtn.addEventListener('click', startGame);
 // Modal logic
 howToBtn.addEventListener('click', () => modal.style.display = 'block');
 closeModal.addEventListener('click', () => modal.style.display = 'none');
-window.addEventListener('click', e => { if(e.target === modal) modal.style.display = 'none'; });
+window.addEventListener('click', e => { if (e.target === modal) modal.style.display = 'none'; });
 
 // Keyboard input
 document.addEventListener('keydown', e => {
-  if (["ArrowLeft","ArrowRight","ArrowUp","ArrowDown"].includes(e.key)) {
+  if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].includes(e.key)) {
     e.preventDefault();
-    move(e.key.replace("Arrow","").toLowerCase());
+    move(e.key.replace("Arrow", "").toLowerCase());
   }
 });
 
@@ -84,7 +99,14 @@ function startGame() {
   endScreen.style.display = 'none';
 
   score = 0;
-  timer = 60;
+  const selected = document.querySelector('input[name="difficulty"]:checked');
+  currentDifficulty = selected ? selected.value : 'normal';
+  maxTime = difficulty[currentDifficulty].seconds;
+  timer = maxTime;
+
+  // Show the mode in the HUD
+  const diffLabel = document.getElementById('difficulty-label');
+  if (diffLabel) diffLabel.textContent = `Mode: ${difficulty[currentDifficulty].label}`;
   shownContainers = []; // reset array
 
   // Initialize empty board
@@ -99,7 +121,6 @@ function startGame() {
 // Draw board and Heads-Up Display (HUD)
 function drawBoard() {
   let index = 0;
-  let highestTile = "Cup";
 
   for (let r = 0; r < size; r++) {
     for (let c = 0; c < size; c++) {
@@ -109,7 +130,6 @@ function drawBoard() {
       cell.className = 'cell';
       if (currentTile) {
         cell.classList.add(currentTile);
-        if (tileOrder.indexOf(currentTile) > tileOrder.indexOf(highestTile)) highestTile = currentTile;
       }
       index++;
     }
@@ -117,10 +137,10 @@ function drawBoard() {
 
   scoreDisplay.textContent = `Score: ${score}`;
   impactDisplay.textContent = `People Served: ${Math.floor(score / 100)}`;
-  highestTileDisplay.textContent = `Highest Container: ${highestTile}`;
+  highestTileDisplay.textContent = `Highest Container: ${highestContainer}`;
 
   // Update timer fill
-  const pct = (timer / 60) * 100;
+  const pct = (timer / maxTime) * 100;
   timerFill.style.width = pct + "%";
 }
 
@@ -157,12 +177,13 @@ function move(direction) {
     for (let i = 0; i < line.length; i++) {
       const current = line[i];
       if (!current) continue;
-      if (newLine.length && newLine[newLine.length-1] === current) {
-        const nextLevel = tileOrder[tileOrder.indexOf(current)+1];
+      if (newLine.length && newLine[newLine.length - 1] === current) {
+        const nextLevel = tileOrder[tileOrder.indexOf(current) + 1];
         if (nextLevel) {
-          newLine[newLine.length-1] = nextLevel;
+          newLine[newLine.length - 1] = nextLevel;
           score += 10; // simple scoring
           showFact(nextLevel);
+          updateHighestContainer(nextLevel);
         }
       } else {
         newLine.push(current);
@@ -193,6 +214,11 @@ function move(direction) {
 
   addNewTile();
   drawBoard();
+
+  if (!hasMovesLeft()) {
+    clearInterval(timerInterval);
+    endGame();
+  }
 }
 
 // Show container-aligned or charity fact
@@ -201,12 +227,41 @@ function showFact(tile) {
   if (!shownContainers.includes(tile)) {
     fact = containerFacts[tile];      // first time: container fact
     shownContainers.push(tile);       // mark as shown
-  } else if (["Well","Pump","Pipeline"].includes(tile)) {
+  } else if (["Well", "Pump", "Pipeline"].includes(tile)) {
     fact = charityFacts[Math.floor(Math.random() * charityFacts.length)]; // milestone fact
   } else {
     fact = `You merged a ${tile}! Keep going!`; // repeated merge
   }
   factBox.textContent = fact;
+}
+
+// Get the highest container on the board
+function updateHighestContainer(tileName) {
+  const currentIndex = tileOrder.indexOf(highestContainer);
+  const newIndex = tileOrder.indexOf(tileName);
+  if (newIndex > currentIndex) {
+    highestContainer = tileName;
+    document.querySelectorAll("#highest-tile").forEach(el => {
+      el.textContent = `Highest Container: ${highestContainer}`;
+    });
+  }
+}
+
+function hasMovesLeft() {
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      if (!board[r][c]) return true;
+    }
+  }
+  for (let r = 0; r < size; r++) {
+    for (let c = 0; c < size; c++) {
+      const t = board[r][c];
+      if (!t) continue;
+      if (c < size - 1 && board[r][c + 1] === t) return true; // right
+      if (r < size - 1 && board[r + 1][c] === t) return true; // down
+    }
+  }
+  return false;
 }
 
 // End the game
@@ -216,25 +271,8 @@ function endGame() {
   endScreen.style.display = 'block';
   document.getElementById('final-score').textContent = `Final Score: ${score}`;
   document.getElementById('final-impact').textContent = `People Served: ${Math.floor(score / 100)}`;
-  highestTileDisplay.textContent = `Highest Container: ${getHighestTile()}`;
+  highestTileDisplay.textContent = `Highest Container: ${highestContainer}`;
 }
 
-// Get the highest container on the board
-function getHighestTile() {
-  let highestTile = "Cup"; // start with the smallest container
 
-  for (let row = 0; row < size; row++) {
-    for (let col = 0; col < size; col++) {
-      const currentTile = board[row][col];
-      if (currentTile) {
-        // compare positions in tileOrder array
-        if (tileOrder.indexOf(currentTile) > tileOrder.indexOf(highestTile)) {
-          highestTile = currentTile;
-        }
-      }
-    }
-  }
-
-  return highestTile;
-}
 

@@ -1,13 +1,30 @@
-/* WellPlayed - Style Sheet */
+/* WellPlayed - Style Sheet (charity: water-inspired colors) */
 
 /* General Styles */
 body {
-  font-family: Arial, sans-serif;
-  background-color: #e1f5fe;
-  color: #01579b;
+  font-family: 'Montserrat',Arial, sans-serif;
+  background-color: #E6FBFF;
+  color: #003E6B;           
   text-align: center;
   margin: 0;
   padding: 20px;
+}
+
+footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  background: #fff;
+  padding: 10px 0;
+  text-align: center;
+  box-shadow: 0 -1px 6px rgba(0,0,0,0.06);
+}
+
+footer p {
+  margin: 0;
+  font-size: 14px;
 }
 
 h1, h2, p {
@@ -15,8 +32,8 @@ h1, h2, p {
 }
 
 button {
-  background-color: #ffd600;
-  color: #01579b;
+  background-color: #FFD400;
+  color: #FFFFFF;
   border: none;
   padding: 10px 20px;
   border-radius: 6px;
@@ -26,7 +43,7 @@ button {
 }
 
 button:hover {
-  background-color: #ffea00;
+  filter: brightness(1.05);
 }
 
 /* Screens */
@@ -46,18 +63,35 @@ button:hover {
 #hud {
   display: flex;
   justify-content: space-around;
-  margin-bottom: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
+  background-color: #CFF6FF;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0, 62, 107, 0.06);
+  margin: 15px auto 20px;
+  width: 90%;
+  max-width: 600px;
 }
 
-#score, #impact, #highest-tile {
-  font-weight: bold;
+.hud-item {
+  background: white;
+  color: #003E6B;
+  border-radius: 8px;
+  padding: 8px 12px;
+  font-weight: 600;
+  font-size: 0.95em;
+  flex: 1;
+  text-align: center;
+  box-shadow: inset 0 -2px 0 rgba(0, 62, 107, 0.08);
 }
 
 /* Timer Bar */
 #timer-bar {
-  width: 200px;
+  flex: 1;
   height: 15px;
-  background-color: #81d4fa;
+  background-color: #00B4E6;
   border-radius: 8px;
   margin: 0 auto;
   overflow: hidden;
@@ -66,7 +100,7 @@ button:hover {
 #timer-fill {
   width: 100%;
   height: 100%;
-  background-color: #0288d1;
+  background-color: #003E6B;
   transition: width 0.3s linear;
 }
 
@@ -76,7 +110,7 @@ button:hover {
   grid-template-columns: repeat(4, 70px);
   grid-gap: 6px;
   justify-content: center;
-  background-color: #b3e5fc;
+  background-color: #CFF6FF;
   padding: 6px;
   border-radius: 10px;
   margin: 20px auto;
@@ -95,18 +129,18 @@ button:hover {
   transition: background 0.3s, color 0.3s;
 }
 
-/* Title Colors */
-.Cup { background-color: #e1f5fe; color: #01579b; }
-.Bottle { background-color: #81d4fa; color: white; }
-.Bucket { background-color: #4fc3f7; color: white; }
-.JerryCan { background-color: #29b6f6; color: white; }
-.Well { background-color: #0288d1; color: white; }
-.Pump { background-color: #01579b; color: white; }
-.Pipeline { background-color: #013366; color: white; }
+/* Title Colors (water-themed shades) */
+.Cup    { background-color: #E6FBFF; color: #003E6B; } 
+.Bottle { background-color: #00B4E6; color: white; }
+.Bucket { background-color: #00A3D0; color: white; }
+.JerryCan { background-color: #008BB8; color: white; }
+.Well   { background-color: #0077A3; color: white; }
+.Pump   { background-color: #005F82; color: white; }
+.Pipeline { background-color: #003E6B; color: white; }
 
 /* Fact Box */
 #fact-box {
-  background-color: #b3e5fc;
+  background-color: #CFF6FF;
   padding: 10px;
   border-radius: 8px;
   width: 250px;
@@ -126,12 +160,12 @@ button:hover {
   display: none;
   position: fixed;
   top: 0; left: 0; width: 100%; height: 100%;
-  background-color: rgba(0,0,0,0.5);
+  background-color: rgba(0,0,0,0.45);
   z-index: 1000;
 }
 
 .modal-content {
-  background-color: #e1f5fe;
+  background-color: #F0FBFF;
   margin: 15% auto;
   padding: 20px;
   width: 80%;
@@ -145,3 +179,13 @@ button:hover {
   font-size: 20px;
   cursor: pointer;
 }
+
+/* Difficulty Picker */
+#difficulty-picker {
+  margin: 10px 0 0;
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  font-weight: 600;
+}
+#difficulty-picker label { cursor: pointer; }

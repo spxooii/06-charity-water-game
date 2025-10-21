@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>WellPlayed Prototype</title>
+  <title>WellPlayed</title>
   <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
 </head>
+
 <body>
 
   <!-- START SCREEN -->
@@ -14,17 +17,23 @@
     <p class="tagline">Merge your way to clean water for all</p>
     <button id="start-btn">Start Game</button>
     <button id="how-to-play-btn">How to Play</button>
+    <div id="difficulty-picker">
+      <label><input type="radio" name="difficulty" value="easy" checked> Easy (90s)</label>
+      <label><input type="radio" name="difficulty" value="normal"> Normal (60s)</label>
+      <label><input type="radio" name="difficulty" value="hard"> Hard (40s)</label>
+    </div>
     <p class="note">
-      Inspired by charity: water’s mission to bring clean water to everyone.
+      Inspired by charity: water's mission to bring clean water to everyone.
     </p>
   </div>
 
   <!-- GAME SCREEN -->
   <div id="game-screen">
     <div id="hud">
-      <div id="score">Score: 0</div>
-      <div id="impact">People Served: 0</div>
-      <div id="highest-tile">Highest Container: Cup</div>
+      <div class="hud-item" id="score">Score: 0</div>
+      <div class="hud-item" id="impact">People Served: 0</div>
+      <div class="hud-item" id="difficulty-label">Mode: Normal</div>
+      <div class="hud-item" id="highest-tile">Highest Container</div>
       <div id="timer-bar">
         <div id="timer-fill"></div>
       </div>
@@ -32,10 +41,22 @@
 
     <div id="game">
       <!-- 16 empty grid cells -->
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
-      <div class="cell"></div><div class="cell"></div><div class="cell"></div><div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
+      <div class="cell"></div>
     </div>
 
     <div id="fact-box">
@@ -48,10 +69,9 @@
     <h2>Game Over!</h2>
     <p id="final-score">Final Score: 0</p>
     <p id="final-impact">People Served: 0</p>
-    <p id="highest-tile">Highest Container: Cup</p>
-    <p class="reminder">💧 Remember: Every drop counts.</p>
+    <p id="highest-tile">Highest Container</p>
+    <p class="reminder">Thank you for playing WellPlayed 💧 Learn how you can make a real impact below.</p>
     <button id="play-again">Play Again</button>
-    <button id="learn-more">Learn More</button>
   </div>
 
   <!-- HOW TO PLAY MODAL -->
@@ -69,6 +89,16 @@
     </div>
   </div>
 
+
+  <footer>
+    <p>
+      Learn more about
+      <a href="https://www.charitywater.org/" target="_blank" rel="noopener noreferrer">charity: water</a> |
+      <a href="https://www.charitywater.org/donate" target="_blank" rel="noopener noreferrer">Donate Now</a>
+    </p>
+  </footer>
+
   <script src="script.js"></script>
 </body>
+
 </html>
